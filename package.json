@@ -1,6 +1,6 @@
 {
   "name": "auxiliary",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,13 +13,15 @@
   "keywords": [
     "utilities",
     "declarative",
-    "dependency",
-    "injection"
+    "di"
   ],
   "author": "Taras Labiak <kissarat@gmail.com>",
   "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/kissarat/auxiliary/issues"
   },
-  "homepage": "https://github.com/kissarat/auxiliary#readme"
+  "homepage": "https://github.com/kissarat/auxiliary#readme",
+  "dependencies": {
+    "lodash": "^4.17.11"
+  }
 }
