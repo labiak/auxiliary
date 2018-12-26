@@ -5,5 +5,12 @@ module.exports = {
 
   isObject(obj) {
     return 'object' === typeof obj && null !== obj;
+  },
+
+  strip(s) {
+    return s
+        .trim()
+        .split(/\s*\n+\s*/)
+        .join("\n");
   }
 };
