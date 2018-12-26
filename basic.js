@@ -12,5 +12,22 @@ module.exports = {
         .trim()
         .split(/\s*\n+\s*/)
         .join("\n");
+  },
+
+  isFunction(fun) {
+    return 'function' === typeof fun;
+  },
+
+  isEmpty(obj) {
+    if (!obj) {
+      return true;
+    }
+    if ('string' === typeof obj) {
+      return !obj.trim();
+    }
+    for(const key in obj) {
+      return false;
+    }
+    return true;
   }
 };

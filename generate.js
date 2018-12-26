@@ -3,13 +3,19 @@ const _ = require('./basic');
 const utilities = require('./utilities');
 
 module.exports = {
-  "README.md": _.strip(`
-    # ${pkg.name}
-    ${pkg.description}
+  "README.md"(pack = pkg) {
+    return _.strip(`
+    # ${pack.name}
+    ${pack.description}
   `)
+  }
 };
 
 if (!module.parent) {
   const [options, filename] = utilities.getOptions();
-  console.log(module.exports[filename]);
+  if (_.isEmpty(filename)) {
+    throw new Error('Filename is empty');
+  }
+  const fn = module.exports[filename];
+  console.log(_.isFunction(fn) ? fn() : fn);
 }
