@@ -1,6 +1,6 @@
 {
   "name": "auxiliary",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -20,8 +20,5 @@
   "bugs": {
     "url": "https://github.com/kissarat/auxiliary/issues"
   },
-  "homepage": "https://github.com/kissarat/auxiliary#readme",
-  "dependencies": {
-    "lodash": "^4.17.11"
-  }
+  "homepage": "https://github.com/kissarat/auxiliary#readme"
 }

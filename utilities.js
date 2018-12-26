@@ -4,7 +4,7 @@
 
 const path = require("path");
 const fs = require("fs");
-const _ = require("lodash");
+const _ = require("./basic");
 
 const NODE_PRODUCTION_MODE = "production";
 const DEBUG = NODE_PRODUCTION_MODE !== process.env.NODE_ENV;
