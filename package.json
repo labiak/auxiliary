@@ -1,6 +1,6 @@
 {
   "name": "auxiliary",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Toolbox for everyone",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "di"
   ],
   "author": "Taras Labiak <kissarat@gmail.com>",
-  "license": "GPL-3.0-or-later",
+  "license": "AGPL-3.0",
   "bugs": {
     "url": "https://github.com/kissarat/auxiliary/issues"
   },
