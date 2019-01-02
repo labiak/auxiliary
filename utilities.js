@@ -116,57 +116,6 @@ function die(message) {
   process.exit(1);
 }
 
-function variables(vars) {
-  return function(name, evaluate) {
-    if (evaluate) {
-      return eval(name);
-    }
-    const v = vars[name];
-    if ("undefined" === typeof v) {
-      console.error(`Variable ${name} not found`);
-    } else if ("function" === typeof v) {
-      return v(vars);
-    }
-    return v;
-  };
-}
-
-function substitute(object, resolve) {
-  if (null !== resolve && "object" === typeof resolve) {
-    resolve = variables(resolve);
-  }
-  const result = {};
-  for (const key in object) {
-    let v = object[key];
-    if (undefined === v) {
-      continue;
-    }
-    if ("function" === typeof v) {
-      v = v();
-    }
-    switch (typeof v) {
-      case "object":
-        result[key] = null === v ? null : substitute(object[key], resolve);
-        break;
-      case "string":
-        const m = /^\$?{([^}]+)}$/.exec(v);
-        if (m) {
-          result[key] = resolve(m[1], "$" === m[0][0]);
-        } else {
-          result[key] = v.replace(/\${([^}]+)}/, function(s, name) {
-            return resolve(name, "$" === s[0]);
-          });
-        }
-        break;
-      case "function":
-        break;
-      default:
-        result[key] = object[key];
-    }
-  }
-  return result;
-}
-
 function visitor(fun, check = o => _.isObject(o)) {
   return function visit(object, stack = [], root) {
     if (!root) {
@@ -190,51 +139,15 @@ function visitor(fun, check = o => _.isObject(o)) {
   };
 }
 
-function arrayMerge(target, source) {
-  if (target) {
-    if (source) {
-      target.push(...source);
-      target = _.uniq(target);
-    }
-    return target;
-  } else {
-    return source;
-  }
+function instruction(name, fun) {
+  return visitor(fun, o => _.isObject(o) && name in o);
 }
 
-function merge(target, source, options = {}) {
-  if (source instanceof Array) {
-    if (target instanceof Array) {
-      return (options.arrayMerge || arrayMerge)(target, source);
-    }
-    return source;
-  } else if (source instanceof Array) {
-    return target;
-  }
-  for (const key in source) {
-    const s = source[key];
-    const t = target[key];
-    if (_.isObject(s) && _.isObject(t)) {
-      target[key] = merge(t, s, options);
-    } else {
-      target[key] = s;
-    }
-  }
-  return target;
-}
-
-merge.all = function([target, ...sources], options) {
-  for (const source of sources) {
-    target = merge(target, source, options);
-  }
-  return target;
-};
-
-let projectRoot = __dirname;
+let PROJECT = __dirname;
 function lookupRootDirectory(dirname) {
   for(const filename of fs.readdirSync(dirname)) {
     if ('package.json' === filename) {
-      projectRoot = dirname;
+      PROJECT = dirname;
       break;
     }
   }
@@ -246,8 +159,12 @@ function lookupRootDirectory(dirname) {
 
 lookupRootDirectory(__dirname);
 
-function resolveFilename(...paths) {
-  return path.join(projectRoot, ...paths);
+const defaultAliases = {
+  auxiliary: __dirname
+};
+
+function resolveFilename(filename, aliases = defaultAliases) {
+  return path.join(PROJECT, filename);
 }
 
 function load(url) {
@@ -279,5 +196,14 @@ module.exports = {
   resolveFilename,
   arrayMerge,
   load,
-  projectRoot
+  instruction,
+  constants: {
+    PROJECT,
+    DEBUG,
+    aliases: defaultAliases
+  }
 };
+
+Object.assign(module.exports, require('./aggregators/conveyor'));
+Object.assign(module.exports, require('./aggregators/merge'));
+Object.assign(module.exports, require('./aggregators/reflection'));

@@ -4,7 +4,8 @@
   "description": "Toolbox for everyone",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "project": "source ./generators/project.js $1 > "
   },
   "repository": {
     "type": "git",

@@ -29,5 +29,9 @@ module.exports = {
       return false;
     }
     return true;
+  },
+
+  freeze() {
+
   }
 };
