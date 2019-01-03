@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# @author Taras Labiak <taras.labiak@indeema.com>
+
+source ~/.projects
+for i in ${active_projects[*]}; do
+    pushd .
+    eval dir=\$$i
+    echo $i
+    cd $dir
+    git pull
+    popd
+done
