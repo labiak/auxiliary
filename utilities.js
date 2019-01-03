@@ -5,6 +5,7 @@
 const path = require("path");
 const fs = require("fs");
 const _ = require("./basic");
+const walker = require('./lib/walker');
 
 const NODE_PRODUCTION_MODE = "production";
 const DEBUG = NODE_PRODUCTION_MODE !== process.env.NODE_ENV;
@@ -281,3 +282,5 @@ module.exports = {
   load,
   projectRoot
 };
+
+Object.assign(module.exports, walker);
